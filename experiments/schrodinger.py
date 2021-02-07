@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute, Aer
 from qiskit.visualization import plot_histogram
+import seaborn as sns
 
 import git.Projektinis.tools.functions as fun
 import git.Projektinis.tools.simulators as tools
@@ -156,6 +157,25 @@ def print_gates(idx):
 
     return answer
 
+def count_state_averge(val):
+    val = np.abs(val)
+    print(val)
+    values = tools.all_binary_combs(size=3)
+    s = (8, 8)
+    init_data = np.zeros(s)
+    df = pd.DataFrame(data=val, index=values[::-1], columns=values)
+    sns.heatmap(df, cmap='RdYlGn_r', linewidths=0.5, annot=True).set_title(
+        "Šredingerio lygties perėjimo matricos reikšmių moduliai")
+    plt.show()
+
+
+def schrodinger_final_state_average():
+    pi_val = np.pi / 2
+
+    qc = schrodinger_circle(pi_val, measure=False)
+    res = tools.simulate_unitary_matrix_df(qc)
+    count_state_averge(res)
+
 
 def schrodinger_experiment():
     pi_val = np.pi / 2
@@ -166,8 +186,9 @@ def schrodinger_experiment():
 
     counts = tools.simulate(qc).get_counts()
     print(counts)
-    plot_histogram(counts, title="Gera")
+    plot_histogram(counts, title="Šredingerio lygties būsenos, kai $\Phi = \\frac{\pi}{2}$ ")
     plt.show()
 
-full_rotation()
+# full_rotation()
 # schrodinger_experiment()
+schrodinger_final_state_average()
