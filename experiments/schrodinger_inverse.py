@@ -47,11 +47,9 @@ def schrodinger_inverse_gates_experiment():
     # plt.show()
     counts = tools.simulate(qc).get_counts()
     print(counts)
-    plot_histogram(counts, title="Mano")
+    plot_histogram(counts, title="Grįžtamos sistemos būsenos")
     plt.show()
 
-
-# schrodinger_inverse_gates_experiment()
 
 def math_experiment():
     tensor_I = fun.tensor_all([my_gt.H.get_value(), my_gt.p_gate.get_value(np.pi)])
@@ -68,5 +66,6 @@ def math_experiment():
     fun.to_latex(u)
 
 
-math_experiment()
+schrodinger_inverse_gates_experiment()
+# math_experiment()
 # print(fun.mul(my_gt.Z.get_value(), my_gt.Z.get_value()))
