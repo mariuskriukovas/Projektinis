@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
 from qiskit.visualization import plot_histogram
+import seaborn as sns
 
 import git.Projektinis.tools.functions as fun
 import git.Projektinis.tools.gates as my_gt
@@ -61,18 +63,35 @@ def schrodinger_circle_with_Z_gates(fi, measure = True):
 
     return qc
 
+def count_state_averge(val):
+    val = np.abs(val)
+    print(val)
+    values = tools.all_binary_combs(size=2)
+    s = (4, 4)
+    init_data = np.zeros(s)
+    df = pd.DataFrame(data=val, index=values[::-1], columns=values)
+    sns.heatmap(df, cmap='RdYlGn_r', linewidths=0.5, annot=True).set_title(
+        "Šredingerio lygties su Z keitiniu perėjimo matricos reikšmių moduliai")
+    plt.show()
+
+def schrodinger_with_Z_final_state_average():
+    pi_val = np.pi / 2
+
+    qc = schrodinger_circle_with_Z_gates(pi_val, measure=False)
+    res = tools.simulate_unitary_matrix_df(qc)
+    count_state_averge(res)
 
 def schrodinger_with_Z_gates_experiment():
     pi_val = np.pi/2
-
     qc = schrodinger_circle_with_Z_gates(pi_val)
     qc.draw(output='mpl')
     # plt.show()
     counts = tools.simulate(qc).get_counts()
     print(counts)
-    plot_histogram(counts, title="Mano")
+    plot_histogram(counts, title="Šredingerio lygties būsenos, su Z vartų keitiniu, kai $\Phi = \\frac{\pi}{2}$ ")
     plt.show()
 
+schrodinger_with_Z_final_state_average()
 # schrodinger_with_Z_gates_experiment()
 
 
